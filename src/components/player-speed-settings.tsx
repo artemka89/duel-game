@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Range } from "../shared/range";
+import { Range } from "../shared/ui/range";
 
 interface PlayerSpeedSettingsProps {
   className?: string;

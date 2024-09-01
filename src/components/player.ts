@@ -1,3 +1,4 @@
+import { PLAYER_COLORS } from "../shared/constants/player-colors";
 import { MagicBall } from "./magic-ball";
 
 type PlayerMovements = "to bottom" | "to top";
@@ -6,7 +7,7 @@ export class Player {
   private playerSidePosition: "left" | "right";
   private movement: PlayerMovements;
   private movementSpeed: number = 5;
-  private _playerColor: string = "green";
+  private _playerColor: string = PLAYER_COLORS[0];
 
   private context: CanvasRenderingContext2D;
   private sceneHeight: number;

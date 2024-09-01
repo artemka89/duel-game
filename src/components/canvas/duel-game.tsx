@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { DuelGameEngine } from "../duel-game-engine";
 
 import { PlayerSpeedSettings } from "../player-speed-settings";
-import { Button } from "../../shared/button";
-import { PickerColorModal } from "../picker-color-modal";
+import { Button } from "../../shared/ui/button";
+
+import { PlayerScore } from "../player-score";
+import { ColorPickerModal } from "../color-picker-modal";
 
 export const DuelGame = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -127,20 +129,9 @@ export const DuelGame = () => {
           {isPlaying ? "Pause" : "Play"}
         </Button>
       </div>
-
-      <div className="flex justify-between gap-2 py-3 text-xl">
-        <div className="bg-blue-600/50 px-6 h-10 flex items-center justify-center rounded-lg">
-          Герой 1:
-          <span className="text-orange-400 ml-2 font-bold text-xl">
-            {score.player1}
-          </span>
-        </div>
-        <div className="bg-blue-600/50 px-6 h-10 flex items-center justify-center rounded-lg">
-          Герой 2:
-          <span className="text-orange-400 ml-2 font-bold text-xl">
-            {score.player2}
-          </span>
-        </div>
+      <div className="flex justify-between gap-2 py-3">
+        <PlayerScore playerName="Герой 1" score={score.player1} />
+        <PlayerScore playerName="Герой 2" score={score.player2} />
       </div>
       <div className="relative">
         <canvas
@@ -150,7 +141,7 @@ export const DuelGame = () => {
           className="border-2 border-blue-600 rounded-md bg-black w-[700px] h-[500px]"
         />
         {isModalOpen && (
-          <PickerColorModal
+          <ColorPickerModal
             value={duel.current?.player1.playerColor}
             modalPosition={modalPositionRef.current!}
             onChange={(value) => {

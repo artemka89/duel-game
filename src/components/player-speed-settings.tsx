@@ -19,7 +19,7 @@ export const PlayerSpeedSettings: FC<PlayerSpeedSettingsProps> = ({
       <Range
         label="Скорость героя: "
         value={values.speedPlayer}
-        min="3"
+        min="2"
         max="10"
         onChange={(value) =>
           onChangeSettings({ ...values, speedPlayer: value })
@@ -28,8 +28,8 @@ export const PlayerSpeedSettings: FC<PlayerSpeedSettingsProps> = ({
       <Range
         label="Скорость шара: "
         value={values.speedBalls}
-        min="3"
-        max="15"
+        min="1"
+        max="5"
         onChange={(value) => onChangeSettings({ ...values, speedBalls: value })}
       />
     </div>

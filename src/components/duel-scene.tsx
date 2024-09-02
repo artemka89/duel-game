@@ -37,7 +37,6 @@ export const DuelScene: FC<DuelSceneProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
   const duel = useRef<DuelGameEngine | null>(null);
-
   const isMount = useRef(false);
 
   const canvasHeight = 500;
@@ -75,7 +74,7 @@ export const DuelScene: FC<DuelSceneProps> = ({
         duel.current = null;
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -1,20 +1,27 @@
+import { Coordinates } from "../shared/types/types";
+
+type MagicBallMovement = "to left" | "to right";
+
 export class MagicBall {
   private _balls: { x: number; y: number }[] = [];
+
+  private movement: MagicBallMovement;
 
   private _speed: number = 10;
   private context: CanvasRenderingContext2D;
   private boardWidth: number;
 
-  constructor(context: CanvasRenderingContext2D) {
+  constructor(context: CanvasRenderingContext2D, movement: MagicBallMovement) {
     this.context = context;
     this.boardWidth = context.canvas.width + 10;
+    this.movement = movement;
   }
 
-  addBall(x: number, y: number) {
-    this._balls.push({ x, y });
+  addBall(coordinates: Coordinates) {
+    this._balls.push(coordinates);
   }
 
-  renderBall() {
+  render() {
     this._balls.forEach((boll) => {
       this.context.beginPath();
       this.context.fillStyle = "red";
@@ -23,20 +30,20 @@ export class MagicBall {
     });
   }
 
-  moveBalls(playerPosition: "left" | "right") {
+  move() {
     this._balls.forEach((boll) => {
       if (boll.x < this.boardWidth) {
-        if (playerPosition === "left") {
-          boll.x += this._speed;
-        }
-        if (playerPosition === "right") {
+        if (this.movement === "to left") {
           boll.x -= this._speed;
+        }
+        if (this.movement === "to right") {
+          boll.x += this._speed;
         }
       } else {
         this._balls.splice(0, 1);
       }
     });
-    this.renderBall();
+    this.render();
   }
 
   get balls() {

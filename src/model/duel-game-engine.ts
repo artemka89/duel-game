@@ -31,8 +31,8 @@ export class DuelGameEngine {
     this.sceneHeight = sceneHeight;
     this.sceneWidth = sceneWidth;
 
-    this.player1 = new Player(this.context, this.sceneHeight, "left");
-    this.player2 = new Player(this.context, this.sceneHeight, "right");
+    this.player1 = new Player(this.context, "left");
+    this.player2 = new Player(this.context, "right");
 
     this.frameCount = 0;
     this.timeStamp = 1;
@@ -91,6 +91,8 @@ export class DuelGameEngine {
 
       this.player1.render(this.cursorPositionX, this.cursorPositionY);
       this.player2.render(this.cursorPositionX, this.cursorPositionY);
+      this.player1.shotMagicBall.move();
+      this.player2.shotMagicBall.move();
       this.checkShots();
     }
 

@@ -18,13 +18,13 @@ export const App = () => {
   });
 
   const [player1Settings, setPlayer1Settings] = useState({
-    speedPlayer: "5",
-    speedBalls: "7",
+    speedPlayer: "6",
+    speedBalls: "1",
   });
 
   const [player2Settings, setPlayer2Settings] = useState({
-    speedPlayer: "5",
-    speedBalls: "7",
+    speedPlayer: "6",
+    speedBalls: "1",
   });
 
   return (

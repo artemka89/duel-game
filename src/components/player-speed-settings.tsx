@@ -3,8 +3,11 @@ import { Range } from "../shared/ui/range";
 
 interface PlayerSpeedSettingsProps {
   className?: string;
-  values: { range: string; balls: string };
-  onChangeSettings: (values: { range: string; balls: string }) => void;
+  values: { speedPlayer: string; speedBalls: string };
+  onChangeSettings: (values: {
+    speedPlayer: string;
+    speedBalls: string;
+  }) => void;
 }
 
 export const PlayerSpeedSettings: FC<PlayerSpeedSettingsProps> = ({
@@ -15,17 +18,19 @@ export const PlayerSpeedSettings: FC<PlayerSpeedSettingsProps> = ({
     <div className="w-[150px]">
       <Range
         label="Скорость героя: "
-        value={values.range}
+        value={values.speedPlayer}
         min="3"
         max="10"
-        onChange={(value) => onChangeSettings({ ...values, range: value })}
+        onChange={(value) =>
+          onChangeSettings({ ...values, speedPlayer: value })
+        }
       />
       <Range
         label="Скорость шара: "
-        value={values.balls}
+        value={values.speedBalls}
         min="3"
         max="15"
-        onChange={(value) => onChangeSettings({ ...values, balls: value })}
+        onChange={(value) => onChangeSettings({ ...values, speedBalls: value })}
       />
     </div>
   );

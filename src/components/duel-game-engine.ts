@@ -6,7 +6,7 @@ export class DuelGameEngine {
   private sceneWidth: number;
   private frameCount: number;
   private timeStamp: number;
-  private playState: boolean;
+  private internalPlayState: boolean;
 
   private cursorPositionX: number = 0;
   private cursorPositionY: number = 0;
@@ -37,7 +37,7 @@ export class DuelGameEngine {
     this.frameCount = 0;
     this.timeStamp = 1;
 
-    this.playState = isPlaying;
+    this.internalPlayState = isPlaying;
 
     this.setScore = setScore;
   }
@@ -80,7 +80,7 @@ export class DuelGameEngine {
   }
 
   animate(isPlaying: boolean) {
-    this.playState = isPlaying;
+    this.internalPlayState = isPlaying;
 
     if (this.frameCount < this.timeStamp) {
       this.frameCount++;
@@ -94,8 +94,8 @@ export class DuelGameEngine {
       this.checkShots();
     }
 
-    if (this.playState) {
-      requestAnimationFrame(() => this.animate(this.playState));
+    if (this.internalPlayState) {
+      requestAnimationFrame(() => this.animate(this.internalPlayState));
     }
   }
 

@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from "react";
-import { DuelGameEngine } from "../duel-game-engine";
+import { DuelGameEngine } from "../model/duel-game-engine";
 
-import { getRelativeCoordinates } from "../../shared/lib/get-relative-coordinates";
+import { getRelativeCoordinates } from "../shared/lib/get-relative-coordinates";
 
 interface DuelSceneProps {
   isPlaying: boolean;
@@ -75,6 +75,7 @@ export const DuelScene: FC<DuelSceneProps> = ({
         duel.current = null;
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

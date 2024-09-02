@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DuelScene } from "./components/game-scene/duel-scene";
+import { DuelScene } from "./components/duel-scene";
 import { Button } from "./shared/ui/button";
 import { PlayerScore } from "./components/player-score";
 import { ColorPickerModal } from "./components/color-picker-modal";

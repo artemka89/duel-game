@@ -13,10 +13,11 @@ export class Player2 {
   private _color: Color;
   private _radius: number;
   private _isSelected: boolean = false;
+  private _bulletColor: Color = PLAYER_COLORS[0];
 
   private _shots: MagicBall[] = [];
   private _firingRate: number;
-  private firingRateTimeStamp = 0;
+  private firingRateTimeStamp = 50;
 
   constructor(coordinates: Coordinates, movement: PlayerMovements) {
     this._coordinates = coordinates;
@@ -80,16 +81,16 @@ export class Player2 {
     return this._movementSpeed;
   }
 
-  set color(value: Color) {
-    this._color = value;
-  }
-
   get color() {
     return this._color;
   }
 
-  setColor(value: Color) {
-    this._color = value;
+  get bulletColor() {
+    return this._bulletColor;
+  }
+
+  setBulletColor(value: Color) {
+    this._bulletColor = value;
   }
 
   get firingRate() {

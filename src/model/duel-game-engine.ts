@@ -72,7 +72,6 @@ export class DuelGameEngine {
       );
 
       if (isPointInPath) {
-        console.log(isPointInPath);
         player.setIsSelected(true);
         this.context.lineWidth = 4;
         this.context.strokeStyle = "red";
@@ -87,7 +86,7 @@ export class DuelGameEngine {
     this._players.forEach((player) => {
       player.shots.forEach((shot) => {
         this.context.beginPath();
-        this.context.fillStyle = "red";
+        this.context.fillStyle = shot.color;
         this.context.arc(
           shot.coordinates.x,
           shot.coordinates.y,
@@ -108,12 +107,22 @@ export class DuelGameEngine {
 
       const bulletMovement =
         player.coordinates.x < this.sceneWidth / 2 ? "to right" : "to left";
-      player.takeShot(new MagicBall({ ...player.coordinates }, bulletMovement));
+      player.takeShot(
+        new MagicBall(
+          { ...player.coordinates },
+          bulletMovement,
+          player.bulletColor
+        )
+      );
 
       const endScene = this.sceneWidth + 15;
 
       player.shots.forEach((shot) => {
         shot.move(endScene);
+
+        if (shot.coordinates.x > endScene || shot.coordinates.x < 0) {
+          player.shots.splice(0, 1);
+        }
       });
     });
   }

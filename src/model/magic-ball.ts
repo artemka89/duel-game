@@ -1,4 +1,4 @@
-import { Coordinates } from "../shared/types/types";
+import { Color, Coordinates } from "../shared/types/types";
 
 type MagicBallMovement = "to left" | "to right";
 
@@ -9,9 +9,16 @@ export class MagicBall {
   private speed: number = 10;
   private _radius: number = 5;
 
-  constructor(coordinates: Coordinates, movement: MagicBallMovement) {
+  private _color: Color;
+
+  constructor(
+    coordinates: Coordinates,
+    movement: MagicBallMovement,
+    color: Color
+  ) {
     this._coordinates = coordinates;
     this.movement = movement;
+    this._color = color;
   }
 
   move(endScene: number) {
@@ -31,5 +38,13 @@ export class MagicBall {
 
   get radius() {
     return this._radius;
+  }
+
+  setColor(value: Color) {
+    this._color = value;
+  }
+
+  get color() {
+    return this._color;
   }
 }

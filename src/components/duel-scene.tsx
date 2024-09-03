@@ -29,7 +29,6 @@ interface DuelSceneProps {
 
 export const DuelScene: FC<DuelSceneProps> = ({
   isPlaying,
-  colorPickerSetting,
   setIsPlaying,
   setScore,
   setColorPickerSetting,
@@ -108,7 +107,7 @@ export const DuelScene: FC<DuelSceneProps> = ({
       setColorPickerSetting((prev) => ({
         ...prev,
         isOpen: true,
-        value: player.color,
+        value: player.bulletColor,
         player: player,
         coordinates: player.coordinates,
       }));

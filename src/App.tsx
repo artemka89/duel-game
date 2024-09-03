@@ -63,7 +63,7 @@ export const App = () => {
               modalPosition={colorPickerSetting.coordinates}
               onChange={(value) => {
                 setColorPickerSetting((prev) => ({ ...prev, value }));
-                colorPickerSetting.player?.setColor(value);
+                colorPickerSetting.player?.setBulletColor(value);
               }}
               onClose={() => {
                 setColorPickerSetting((prev) => ({ ...prev, isOpen: false }));

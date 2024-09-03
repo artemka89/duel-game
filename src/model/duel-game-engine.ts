@@ -161,15 +161,15 @@ export class DuelGameEngine {
   addScore() {
     this._players[0].shots.forEach((shot) => {
       if (this.checkShot(this._players[1], shot)) {
-        this.setScore((prev) => ({ ...prev, player2: prev.player2 + 1 }));
-        shot.coordinates.x = this.sceneWidth + 10;
+        this.setScore((prev) => ({ ...prev, player1: prev.player1 + 1 }));
+        shot.coordinates.x = this.sceneWidth + 15;
       }
     });
 
     this._players[1].shots.forEach((shot) => {
       if (this.checkShot(this._players[0], shot)) {
-        this.setScore((prev) => ({ ...prev, player1: prev.player1 + 1 }));
-        shot.coordinates.x = this.sceneWidth + 10;
+        this.setScore((prev) => ({ ...prev, player2: prev.player2 + 1 }));
+        shot.coordinates.x = this.sceneWidth + 15;
       }
     });
   }

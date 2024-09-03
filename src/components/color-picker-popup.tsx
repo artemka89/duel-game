@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { PLAYER_COLORS } from "../shared/constants/player-colors";
 
-interface ColorPickerModalProps {
+interface ColorPickerPopupProps {
   value?: string;
   modalPosition: { x: number; y: number };
   onChange: (value: string) => void;
   onClose: () => void;
 }
 
-export const ColorPickerModal: FC<ColorPickerModalProps> = ({
+export const ColorPickerPopup: FC<ColorPickerPopupProps> = ({
   value,
   modalPosition,
   onChange,

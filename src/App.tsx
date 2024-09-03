@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DuelScene } from "./components/duel-scene";
 import { Button } from "./shared/ui/button";
 import { PlayerScore } from "./components/player-score";
-import { ColorPickerModal } from "./components/color-picker-modal";
+import { ColorPickerPopup } from "./components/color-picker-popup";
 import { PlayerSpeedSettings } from "./components/player-speed-settings";
 import { PLAYER_COLORS } from "./shared/constants/player-colors";
 import { Player2 } from "./model/player";
@@ -39,7 +39,11 @@ export const App = () => {
       <h1 className="text-3xl font-bold my-10">Дуэль</h1>
       <div>
         <div className="flex justify-center mb-4">
-          <Button onClick={() => setIsPlaying((prev) => !prev)}>
+          <Button
+            onClick={() => {
+              setIsPlaying((prev) => !prev);
+              setColorPickerSetting((prev) => ({ ...prev, isOpen: false }));
+            }}>
             {isPlaying ? "Pause" : "Play"}
           </Button>
         </div>
@@ -57,7 +61,7 @@ export const App = () => {
             setScore={setScore}
           />
           {colorPickerSetting.isOpen && (
-            <ColorPickerModal
+            <ColorPickerPopup
               value={colorPickerSetting.value}
               modalPosition={colorPickerSetting.coordinates}
               onChange={(value) => {

@@ -1,4 +1,5 @@
 import { Coordinates } from "../shared/types/types";
+import { MagicBall } from "./magic-ball";
 import { Player2 } from "./player";
 
 export class DuelGameEngine {
@@ -82,10 +83,38 @@ export class DuelGameEngine {
     });
   }
 
+  renderShots() {
+    this._players.forEach((player) => {
+      player.shots.forEach((shot) => {
+        this.context.beginPath();
+        this.context.fillStyle = "red";
+        this.context.arc(
+          shot.coordinates.x,
+          shot.coordinates.y,
+          shot.radius,
+          0,
+          2 * Math.PI
+        );
+        this.context.fill();
+        this.context.closePath();
+      });
+    });
+  }
+
   movePlayers() {
     this._players.forEach((player) => {
       player.move();
       player.changeMovement(this.sceneHeight);
+
+      const bulletMovement =
+        player.coordinates.x < this.sceneWidth / 2 ? "to right" : "to left";
+      player.takeShot(new MagicBall({ ...player.coordinates }, bulletMovement));
+
+      const endScene = this.sceneWidth + 15;
+
+      player.shots.forEach((shot) => {
+        shot.move(endScene);
+      });
     });
   }
 
@@ -105,6 +134,7 @@ export class DuelGameEngine {
 
       this.renderPlayers();
       this.movePlayers();
+      this.renderShots();
     }
 
     if (this.internalPlayState) {

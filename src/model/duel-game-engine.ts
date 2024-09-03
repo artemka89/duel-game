@@ -15,7 +15,10 @@ export class DuelGameEngine {
     y: 0,
   };
 
-  private _players: Player2[] = [];
+  private _players: Player2[] = [
+    new Player2({ x: 100, y: 250 }, "to bottom"),
+    new Player2({ x: 600, y: 250 }, "to top"),
+  ];
 
   private setScore: React.Dispatch<
     React.SetStateAction<{ player1: number; player2: number }>
@@ -40,12 +43,6 @@ export class DuelGameEngine {
     this.internalPlayState = isPlaying;
 
     this.setScore = setScore;
-  }
-
-  setPlayers(players: Player2[]) {
-    players.forEach((player) => {
-      this._players.push(player);
-    });
   }
 
   get players() {
@@ -124,11 +121,47 @@ export class DuelGameEngine {
           player.shots.splice(0, 1);
         }
       });
+
+      const isRevers =
+        this.cursorCoordinates.x < player.coordinates.x + player.radius &&
+        this.cursorCoordinates.x > player.coordinates.x - player.radius - 10 &&
+        this.cursorCoordinates.x > player.coordinates.y - player.radius &&
+        this.cursorCoordinates.x < player.coordinates.y + player.radius - 10;
+
+      console.log("intersected", isRevers);
     });
+
+    this.addScore();
   }
 
   setCursorCoordinates(coordinates: Coordinates) {
     this.cursorCoordinates = coordinates;
+  }
+
+  checkShot(player: Player2, shot: MagicBall) {
+    const isShot =
+      shot.coordinates.x < player.coordinates.x + player.radius &&
+      shot.coordinates.x > player.coordinates.x - player.radius &&
+      shot.coordinates.y < player.coordinates.y + player.radius &&
+      shot.coordinates.y > player.coordinates.y - player.radius;
+
+    return isShot;
+  }
+
+  addScore() {
+    this._players[0].shots.forEach((shot) => {
+      if (this.checkShot(this._players[1], shot)) {
+        this.setScore((prev) => ({ ...prev, player2: prev.player2 + 1 }));
+        shot.coordinates.x = this.sceneWidth + 10;
+      }
+    });
+
+    this._players[1].shots.forEach((shot) => {
+      if (this.checkShot(this._players[0], shot)) {
+        this.setScore((prev) => ({ ...prev, player1: prev.player1 + 1 }));
+        shot.coordinates.x = this.sceneWidth + 10;
+      }
+    });
   }
 
   animate(isPlaying: boolean) {

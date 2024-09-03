@@ -25,7 +25,7 @@ export class Player2 {
     this._movementSpeed = 5;
     this._color = PLAYER_COLORS[0];
     this._radius = 40;
-    this._firingRate = 1;
+    this._firingRate = 10;
   }
 
   setIsSelected(value: boolean) {

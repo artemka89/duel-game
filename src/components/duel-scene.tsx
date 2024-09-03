@@ -61,10 +61,6 @@ export const DuelScene: FC<DuelSceneProps> = ({
           isPlaying,
           setScore
         );
-        duel.current.setPlayers([
-          new Player2({ x: 100, y: 250 }, "to bottom"),
-          new Player2({ x: 600, y: 250 }, "to top"),
-        ]);
       }
     }
 

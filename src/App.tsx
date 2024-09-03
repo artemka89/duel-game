@@ -5,15 +5,22 @@ import { PlayerScore } from "./components/player-score";
 import { ColorPickerModal } from "./components/color-picker-modal";
 import { PlayerSpeedSettings } from "./components/player-speed-settings";
 import { PLAYER_COLORS } from "./shared/constants/player-colors";
+import { Player2 } from "./model/player";
+import { Coordinates } from "./shared/types/types";
 
 export const App = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
 
-  const [colorPickerSetting, setColorPickerSetting] = useState({
+  const [colorPickerSetting, setColorPickerSetting] = useState<{
+    isOpen: boolean;
+    value: string;
+    player: Player2 | null;
+    coordinates: Coordinates;
+  }>({
     isOpen: false,
-    player: "",
     value: PLAYER_COLORS[0],
+    player: null,
     coordinates: { x: 0, y: 0 },
   });
 
@@ -43,23 +50,21 @@ export const App = () => {
         <div className="relative">
           <DuelScene
             isPlaying={isPlaying}
-            currentPlayerColor={{
-              color: colorPickerSetting.value,
-              player: colorPickerSetting.player,
-            }}
+            colorPickerSetting={colorPickerSetting}
+            setColorPickerSetting={setColorPickerSetting}
             player1Settings={player1Settings}
             player2Settings={player2Settings}
             setIsPlaying={setIsPlaying}
             setScore={setScore}
-            setColorPickerSetting={setColorPickerSetting}
           />
           {colorPickerSetting.isOpen && (
             <ColorPickerModal
               value={colorPickerSetting.value}
               modalPosition={colorPickerSetting.coordinates}
-              onChange={(value) =>
-                setColorPickerSetting((prev) => ({ ...prev, value }))
-              }
+              onChange={(value) => {
+                setColorPickerSetting((prev) => ({ ...prev, value }));
+                colorPickerSetting.player?.setColor(value);
+              }}
               onClose={() => {
                 setColorPickerSetting((prev) => ({ ...prev, isOpen: false }));
                 setIsPlaying(true);

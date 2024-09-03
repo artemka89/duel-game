@@ -2,10 +2,12 @@ import { FC, useEffect, useRef } from "react";
 import { DuelGameEngine } from "../model/duel-game-engine";
 
 import { getRelativeCoordinates } from "../shared/lib/get-relative-coordinates";
+import { Player2 } from "../model/player";
+import { Coordinates } from "../shared/types/types";
 
 interface DuelSceneProps {
   isPlaying: boolean;
-  currentPlayerColor: { color: string; player: string };
+  colorPickerSetting: { value: string };
   player1Settings: { speedPlayer: string; speedBalls: string };
   player2Settings: { speedPlayer: string; speedBalls: string };
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,18 +20,16 @@ interface DuelSceneProps {
   setColorPickerSetting: React.Dispatch<
     React.SetStateAction<{
       isOpen: boolean;
-      player: string;
       value: string;
-      coordinates: { x: number; y: number };
+      player: Player2 | null;
+      coordinates: Coordinates;
     }>
   >;
 }
 
 export const DuelScene: FC<DuelSceneProps> = ({
   isPlaying,
-  currentPlayerColor,
-  player1Settings,
-  player2Settings,
+  colorPickerSetting,
   setIsPlaying,
   setScore,
   setColorPickerSetting,
@@ -62,6 +62,10 @@ export const DuelScene: FC<DuelSceneProps> = ({
           isPlaying,
           setScore
         );
+        duel.current.setPlayers([
+          new Player2({ x: 100, y: 250 }, "to bottom"),
+          new Player2({ x: 600, y: 250 }, "to top"),
+        ]);
       }
     }
 
@@ -83,79 +87,31 @@ export const DuelScene: FC<DuelSceneProps> = ({
     }
   }, [isPlaying]);
 
-  useEffect(() => {
-    if (
-      currentPlayerColor.player === "player1" &&
-      duel.current &&
-      duel.current.player1
-    ) {
-      duel.current.player1.playerColor = currentPlayerColor.color;
-    }
-
-    if (
-      currentPlayerColor.player === "player2" &&
-      duel.current &&
-      duel.current.player2
-    ) {
-      duel.current.player2.playerColor = currentPlayerColor.color;
-    }
-  }, [currentPlayerColor]);
-
-  useEffect(() => {
-    if (duel.current) {
-      duel.current.player1.speeds = {
-        speedPlayer: Number(player1Settings.speedPlayer),
-        speedBall: Number(player1Settings.speedBalls),
-      };
-      duel.current.player2.speeds = {
-        speedPlayer: Number(player2Settings.speedPlayer),
-        speedBall: Number(player2Settings.speedBalls),
-      };
-    }
-  }, [player1Settings, player2Settings]);
-
   const handleMouseMove = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
     if (canvasRef.current) {
-      const { x, y } = getRelativeCoordinates(event, canvasRef.current);
-      duel.current?.setCursorPosition({ x, y });
+      const coordinates = getRelativeCoordinates(event, canvasRef.current);
+      duel.current?.setCursorCoordinates(coordinates);
     }
   };
 
-  const setPlayerColor = (
-    player: string,
-    color: string,
-    coordinates: { x: number; y: number }
-  ) => {
-    setColorPickerSetting({
-      player,
-      value: color,
-      isOpen: true,
-      coordinates,
-    });
-    setIsPlaying(false);
-  };
+  const handleClick = () => {
+    if (duel.current && isPlaying) {
+      const player = duel.current.players.find(
+        (player) => player.isSelected === true
+      );
+      if (!player) return;
 
-  const handleClick = (
-    event: React.MouseEvent<HTMLCanvasElement, MouseEvent>
-  ) => {
-    if (canvasRef.current && isPlaying) {
-      const coordinates = getRelativeCoordinates(event, canvasRef.current);
-      if (duel.current?.player1.isIntersectedWithCursor) {
-        setPlayerColor(
-          "player1",
-          duel.current.player1.playerColor,
-          coordinates
-        );
-      }
-      if (duel.current?.player2.isIntersectedWithCursor) {
-        setPlayerColor(
-          "player2",
-          duel.current.player2.playerColor,
-          coordinates
-        );
-      }
+      setIsPlaying(false);
+
+      setColorPickerSetting((prev) => ({
+        ...prev,
+        isOpen: true,
+        value: player.color,
+        player: player,
+        coordinates: player.coordinates,
+      }));
     }
   };
 

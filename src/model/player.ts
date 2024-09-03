@@ -5,18 +5,34 @@ import { MagicBall } from "./magic-ball";
 type PlayerMovements = "to bottom" | "to top";
 
 export class Player2 {
-  private coordinates: Coordinates;
+  private _coordinates: Coordinates;
+
   private movement: PlayerMovements;
   private _movementSpeed: number;
-  private _color: Color;
-  private _firingRate: number;
 
-  constructor(coordinates: Coordinates) {
-    this.coordinates = coordinates;
-    this.movement = "to bottom";
+  private _color: Color;
+  private _radius: number;
+
+  private _firingRate: number;
+  private shots: MagicBall[] = [];
+
+  private _isSelected: boolean = false;
+
+  constructor(coordinates: Coordinates, movement: PlayerMovements) {
+    this._coordinates = coordinates;
+    this.movement = movement;
     this._movementSpeed = 5;
     this._color = PLAYER_COLORS[0];
+    this._radius = 40;
     this._firingRate = 1;
+  }
+
+  setIsSelected(value: boolean) {
+    this._isSelected = value;
+  }
+
+  get isSelected() {
+    return this._isSelected;
   }
 
   move() {
@@ -29,14 +45,22 @@ export class Player2 {
     }
   }
 
-  changeMovement(minY: number, maxY: number) {
-    if (this.coordinates.y > maxY) {
+  changeMovement(maxHeight: number) {
+    if (this.coordinates.y > maxHeight - this._radius) {
       this.movement = "to top";
     }
 
-    if (this.coordinates.y < minY) {
+    if (this.coordinates.y < this._radius) {
       this.movement = "to bottom";
     }
+  }
+
+  takeShot(bullet: MagicBall) {
+    this.shots.push(bullet);
+  }
+
+  get coordinates() {
+    return this._coordinates;
   }
 
   set movementSpeed(value: number) {
@@ -55,8 +79,16 @@ export class Player2 {
     return this._color;
   }
 
+  setColor(value: Color) {
+    this._color = value;
+  }
+
   get firingRate() {
     return this._firingRate;
+  }
+
+  get radius() {
+    return this._radius;
   }
 }
 

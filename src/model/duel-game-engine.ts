@@ -1,4 +1,5 @@
-import { Player } from "./player";
+import { Coordinates } from "../shared/types/types";
+import { Player2 } from "./player";
 
 export class DuelGameEngine {
   private context: CanvasRenderingContext2D;
@@ -8,11 +9,12 @@ export class DuelGameEngine {
   private timeStamp: number;
   private internalPlayState: boolean;
 
-  private cursorPositionX: number = 0;
-  private cursorPositionY: number = 0;
+  private cursorCoordinates: Coordinates = {
+    x: 0,
+    y: 0,
+  };
 
-  player1: Player;
-  player2: Player;
+  private _players: Player2[] = [];
 
   private setScore: React.Dispatch<
     React.SetStateAction<{ player1: number; player2: number }>
@@ -31,9 +33,6 @@ export class DuelGameEngine {
     this.sceneHeight = sceneHeight;
     this.sceneWidth = sceneWidth;
 
-    this.player1 = new Player(this.context, "left");
-    this.player2 = new Player(this.context, "right");
-
     this.frameCount = 0;
     this.timeStamp = 1;
 
@@ -42,41 +41,56 @@ export class DuelGameEngine {
     this.setScore = setScore;
   }
 
-  setCursorPosition({ x, y }: { x: number; y: number }) {
-    this.cursorPositionX = x;
-    this.cursorPositionY = y;
+  setPlayers(players: Player2[]) {
+    players.forEach((player) => {
+      this._players.push(player);
+    });
   }
 
-  checkShots() {
-    const { x: player1X, y: player1Y } = this.player1.playerPosition;
-    const player2BallsPosition = this.player2.shotMagicBall.balls;
+  get players() {
+    return this._players;
+  }
 
-    player2BallsPosition.forEach((ball) => {
-      if (
-        player1Y + 40 > ball.y &&
-        player1Y - 40 < ball.y &&
-        player1X + 40 > ball.x &&
-        player1X - 40 < ball.x
-      ) {
-        this.setScore((prev) => ({ ...prev, player2: prev.player2 + 1 }));
-        ball.x = this.sceneWidth + 10;
+  renderPlayers() {
+    this._players.forEach((player) => {
+      this.context.beginPath();
+      this.context.fillStyle = player.color;
+      this.context.arc(
+        player.coordinates.x,
+        player.coordinates.y,
+        player.radius,
+        0,
+        2 * Math.PI
+      );
+      this.context.fill();
+      this.context.closePath();
+
+      const isPointInPath = this.context.isPointInPath(
+        this.cursorCoordinates.x,
+        this.cursorCoordinates.y
+      );
+
+      if (isPointInPath) {
+        console.log(isPointInPath);
+        player.setIsSelected(true);
+        this.context.lineWidth = 4;
+        this.context.strokeStyle = "red";
+        this.context.stroke();
+      } else {
+        player.setIsSelected(false);
       }
     });
+  }
 
-    const { x: player2X, y: player2Y } = this.player2.playerPosition;
-    const player1BallsPosition = this.player1.shotMagicBall.balls;
-
-    player1BallsPosition.forEach((ball) => {
-      if (
-        player2Y + 40 > ball.y &&
-        player2Y - 40 < ball.y &&
-        player2X + 40 > ball.x &&
-        player2X - 40 < ball.x
-      ) {
-        this.setScore((prev) => ({ ...prev, player1: prev.player1 + 1 }));
-        ball.x = this.sceneWidth + 10;
-      }
+  movePlayers() {
+    this._players.forEach((player) => {
+      player.move();
+      player.changeMovement(this.sceneHeight);
     });
+  }
+
+  setCursorCoordinates(coordinates: Coordinates) {
+    this.cursorCoordinates = coordinates;
   }
 
   animate(isPlaying: boolean) {
@@ -89,22 +103,12 @@ export class DuelGameEngine {
 
       this.context.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
 
-      this.player1.render(this.cursorPositionX, this.cursorPositionY);
-      this.player2.render(this.cursorPositionX, this.cursorPositionY);
-      this.player1.shotMagicBall.move();
-      this.player2.shotMagicBall.move();
-      this.checkShots();
+      this.renderPlayers();
+      this.movePlayers();
     }
 
     if (this.internalPlayState) {
       requestAnimationFrame(() => this.animate(this.internalPlayState));
     }
-  }
-
-  getMouseCoordinates() {
-    return {
-      x: this.cursorPositionX,
-      y: this.cursorPositionY,
-    };
   }
 }

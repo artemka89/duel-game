@@ -76,6 +76,24 @@ export class DuelGameEngine {
       } else {
         player.setIsSelected(false);
       }
+
+      const isIntersectedBottom =
+        player.coordinates.y + player.radius - 10 < this.cursorCoordinates.y &&
+        isPointInPath;
+
+      const isIntersectedTop =
+        player.coordinates.y - player.radius + 10 > this.cursorCoordinates.y &&
+        isPointInPath;
+
+      if (isIntersectedBottom) {
+        player.changeMovementOnIntersectedCursor("to top");
+        console.log("to top");
+      }
+
+      if (isIntersectedTop) {
+        player.changeMovementOnIntersectedCursor("to bottom");
+        console.log("to bottom");
+      }
     });
   }
 
@@ -121,14 +139,6 @@ export class DuelGameEngine {
           player.shots.splice(0, 1);
         }
       });
-
-      const isRevers =
-        this.cursorCoordinates.x < player.coordinates.x + player.radius &&
-        this.cursorCoordinates.x > player.coordinates.x - player.radius - 10 &&
-        this.cursorCoordinates.x > player.coordinates.y - player.radius &&
-        this.cursorCoordinates.x < player.coordinates.y + player.radius - 10;
-
-      console.log("intersected", isRevers);
     });
 
     this.addScore();

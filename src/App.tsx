@@ -26,12 +26,12 @@ export const App = () => {
 
   const [player1Settings, setPlayer1Settings] = useState({
     speedPlayer: "6",
-    speedBalls: "1",
+    firingRate: "1",
   });
 
   const [player2Settings, setPlayer2Settings] = useState({
     speedPlayer: "6",
-    speedBalls: "1",
+    firingRate: "1",
   });
 
   return (
@@ -50,10 +50,9 @@ export const App = () => {
         <div className="relative">
           <DuelScene
             isPlaying={isPlaying}
-            colorPickerSetting={colorPickerSetting}
-            setColorPickerSetting={setColorPickerSetting}
             player1Settings={player1Settings}
             player2Settings={player2Settings}
+            setColorPickerSetting={setColorPickerSetting}
             setIsPlaying={setIsPlaying}
             setScore={setScore}
           />

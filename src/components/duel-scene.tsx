@@ -7,9 +7,8 @@ import { Coordinates } from "../shared/types/types";
 
 interface DuelSceneProps {
   isPlaying: boolean;
-  colorPickerSetting: { value: string };
-  player1Settings: { speedPlayer: string; speedBalls: string };
-  player2Settings: { speedPlayer: string; speedBalls: string };
+  player1Settings: { speedPlayer: string; firingRate: string };
+  player2Settings: { speedPlayer: string; firingRate: string };
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   setScore: React.Dispatch<
     React.SetStateAction<{
@@ -29,6 +28,8 @@ interface DuelSceneProps {
 
 export const DuelScene: FC<DuelSceneProps> = ({
   isPlaying,
+  player1Settings,
+  player2Settings,
   setIsPlaying,
   setScore,
   setColorPickerSetting,
@@ -81,6 +82,18 @@ export const DuelScene: FC<DuelSceneProps> = ({
       duel.current.animate(isPlaying);
     }
   }, [isPlaying]);
+
+  useEffect(() => {
+    if (duel.current) {
+      const player1 = duel.current.players[0];
+      player1.setFiringRate(Number(player1Settings.firingRate));
+      player1.seMovementSpeed(Number(player1Settings.speedPlayer));
+
+      const player2 = duel.current.players[1];
+      player2.setFiringRate(Number(player2Settings.firingRate));
+      player2.seMovementSpeed(Number(player2Settings.speedPlayer));
+    }
+  }, [player1Settings, player2Settings]);
 
   const handleMouseMove = (
     event: React.MouseEvent<HTMLCanvasElement, MouseEvent>

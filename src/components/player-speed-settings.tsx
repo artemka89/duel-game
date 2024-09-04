@@ -26,7 +26,7 @@ export const PlayerSpeedSettings: FC<PlayerSpeedSettingsProps> = ({
         }
       />
       <Range
-        label="Скорость шара: "
+        label="Частота стрельбы: "
         value={values.firingRate}
         min="1"
         max="5"

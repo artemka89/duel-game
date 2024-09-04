@@ -128,7 +128,6 @@ export const DuelScene: FC<DuelSceneProps> = ({
       ref={canvasRef}
       onClick={handleClick}
       onMouseMove={handleMouseMove}
-      className="border-2 border-blue-600 rounded-md bg-black w-[700px] h-[500px]"
-    />
+      className="border-2 border-blue-600 rounded-md bg-black w-[700px] h-[500px]"></canvas>
   );
 };

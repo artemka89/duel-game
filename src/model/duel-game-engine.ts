@@ -87,12 +87,10 @@ export class DuelGameEngine {
 
       if (isIntersectedBottom) {
         player.changeMovementOnIntersectedCursor("to top");
-        console.log("to top");
       }
 
       if (isIntersectedTop) {
         player.changeMovementOnIntersectedCursor("to bottom");
-        console.log("to bottom");
       }
     });
   }

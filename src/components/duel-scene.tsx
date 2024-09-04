@@ -4,6 +4,7 @@ import { DuelGameEngine } from "../model/duel-game-engine";
 import { getRelativeCoordinates } from "../shared/lib/get-relative-coordinates";
 import { Player2 } from "../model/player";
 import { Coordinates } from "../shared/types/types";
+import { DEV_MODE } from "../shared/constants/conts";
 
 interface DuelSceneProps {
   isPlaying: boolean;
@@ -43,6 +44,10 @@ export const DuelScene: FC<DuelSceneProps> = ({
   const canvasWidth = 700;
 
   useEffect(() => {
+    if (!DEV_MODE) {
+      isMount.current = true;
+    }
+
     if (isMount.current) {
       if (canvasRef.current === null) {
         return;
@@ -125,6 +130,7 @@ export const DuelScene: FC<DuelSceneProps> = ({
 
   return (
     <canvas
+      id="duel-game"
       ref={canvasRef}
       onClick={handleClick}
       onMouseMove={handleMouseMove}

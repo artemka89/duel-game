@@ -1,6 +1,6 @@
 import { Coordinates } from "../shared/types/types";
 import { MagicBall } from "./magic-ball";
-import { Player2 } from "./player";
+import { Player } from "./player";
 
 export class DuelGameEngine {
   private context: CanvasRenderingContext2D;
@@ -15,9 +15,9 @@ export class DuelGameEngine {
     y: 0,
   };
 
-  private _players: Player2[] = [
-    new Player2({ x: 100, y: 250 }, "to bottom"),
-    new Player2({ x: 600, y: 250 }, "to top"),
+  private _players: Player[] = [
+    new Player({ x: 100, y: 250 }, "to bottom"),
+    new Player({ x: 600, y: 250 }, "to top"),
   ];
 
   private setScore: React.Dispatch<
@@ -113,7 +113,7 @@ export class DuelGameEngine {
     });
   }
 
-  movePlayers() {
+  movePlayersAndShots() {
     this._players.forEach((player) => {
       player.move();
       player.changeMovement(this.sceneHeight);
@@ -146,7 +146,7 @@ export class DuelGameEngine {
     this.cursorCoordinates = coordinates;
   }
 
-  checkShot(player: Player2, shot: MagicBall) {
+  checkShot(player: Player, shot: MagicBall) {
     const isShot =
       shot.coordinates.x < player.coordinates.x + player.radius &&
       shot.coordinates.x > player.coordinates.x - player.radius &&
@@ -183,7 +183,7 @@ export class DuelGameEngine {
       this.context.clearRect(0, 0, this.sceneWidth, this.sceneHeight);
 
       this.renderPlayers();
-      this.movePlayers();
+      this.movePlayersAndShots();
       this.renderShots();
     }
 

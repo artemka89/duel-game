@@ -4,7 +4,7 @@ import { MagicBall } from "./magic-ball";
 
 type PlayerMovements = "to bottom" | "to top";
 
-export class Player2 {
+export class Player {
   private _coordinates: Coordinates;
 
   private movement: PlayerMovements;

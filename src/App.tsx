@@ -5,7 +5,7 @@ import { PlayerScore } from "./components/player-score";
 import { ColorPickerPopup } from "./components/color-picker-popup";
 import { PlayerSpeedSettings } from "./components/player-speed-settings";
 import { PLAYER_COLORS } from "./shared/constants/player-colors";
-import { Player2 } from "./model/player";
+import { Player } from "./model/player";
 import { Coordinates } from "./shared/types/types";
 
 export const App = () => {
@@ -15,7 +15,7 @@ export const App = () => {
   const [colorPickerSetting, setColorPickerSetting] = useState<{
     isOpen: boolean;
     value: string;
-    player: Player2 | null;
+    player: Player | null;
     coordinates: Coordinates;
   }>({
     isOpen: false,

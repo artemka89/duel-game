@@ -2,9 +2,9 @@ import { FC, useEffect, useRef } from "react";
 import { DuelGameEngine } from "../model/duel-game-engine";
 
 import { getRelativeCoordinates } from "../shared/lib/get-relative-coordinates";
-import { Player2 } from "../model/player";
+import { Player } from "../model/player";
 import { Coordinates } from "../shared/types/types";
-import { DEV_MODE } from "../shared/constants/conts";
+import { DEV_MODE } from "../shared/constants/consts";
 
 interface DuelSceneProps {
   isPlaying: boolean;
@@ -21,7 +21,7 @@ interface DuelSceneProps {
     React.SetStateAction<{
       isOpen: boolean;
       value: string;
-      player: Player2 | null;
+      player: Player | null;
       coordinates: Coordinates;
     }>
   >;
